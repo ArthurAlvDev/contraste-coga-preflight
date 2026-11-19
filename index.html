@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none';">
+  <title>Pré-voo WCAG — contraste, tipografia e linguagem simples</title>
+  <meta name="description" content="Verificador gratuito e 100% local de contraste WCAG 2.2, tipografia legível e linguagem simples em PT-BR, com índice de legibilidade e sugestões práticas.">
+  <meta property="og:title" content="Pré-voo WCAG">
+  <meta property="og:description" content="Contraste, tipografia e linguagem simples em uma verificação rápida — tudo no navegador, sem enviar nada.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='16' height='32' fill='%23101828'/%3E%3Crect x='16' width='16' height='32' fill='%23f3f6fb'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="src/styles.css">
+  <script defer src="src/contrast.js"></script>
+  <script defer src="src/typography.js"></script>
+  <script defer src="src/simples.js"></script>
+  <script defer src="src/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir para o conteúdo</a>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"><span></span></span>
+      <div>
+        <h1>Pré-voo WCAG</h1>
+        <p class="tagline">Contraste, tipografia legível e linguagem simples antes de publicar</p>
+      </div>
+    </div>
+    <span class="privacy">100% local · nada é enviado</span>
+  </header>
+
+  <main id="main">
+    <section class="card" aria-labelledby="contrast-title">
+      <h2 id="contrast-title">1. Contraste</h2>
+      <p class="muted">Digite as cores do texto e do fundo. O cálculo segue a luminância relativa da WCAG 2.2.</p>
+
+      <div class="color-grid">
+        <div>
+          <label for="fg">Cor do texto</label>
+          <div class="color-row">
+            <input type="color" id="fg-picker" value="#101828" aria-label="Selecionar cor do texto">
+            <input type="text" id="fg" value="#101828" inputmode="text" spellcheck="false">
+          </div>
+        </div>
+        <div>
+          <label for="bg">Cor do fundo</label>
+          <div class="color-row">
+            <input type="color" id="bg-picker" value="#f3f6fb" aria-label="Selecionar cor do fundo">
+            <input type="text" id="bg" value="#f3f6fb" inputmode="text" spellcheck="false">
+          </div>
+        </div>
+        <div>
+          <label for="size">Tamanho do texto (px)</label>
+          <input type="number" id="size" value="16" min="8" max="96" step="1">
+        </div>
+        <div class="sample-wrap">
+          <span class="label-like">Amostra</span>
+          <p id="sample" class="sample">Texto de exemplo para conferir a leitura.</p>
+        </div>
+      </div>
+
+      <div id="contrast-result" class="contrast-result" hidden>
+        <div class="ratio-box">
+          <span id="ratio" class="ratio">–</span>
+          <span class="ratio-label">razão de contraste</span>
+        </div>
+        <div class="grades">
+          <div class="grade"><span class="key">Texto normal</span><span id="grade-normal" class="value">–</span></div>
+          <div class="grade"><span class="key">Texto grande</span><span id="grade-large" class="value">–</span></div>
+          <div class="grade"><span class="key">Componentes de interface</span><span id="grade-ui" class="value">–</span></div>
+        </div>
+        <p id="contrast-hint" class="muted"></p>
+      </div>
+
+      <p id="contrast-status" class="status" role="status" aria-live="polite" data-kind="info"></p>
+    </section>
+
+    <section class="card" aria-labelledby="type-title">
+      <h2 id="type-title">2. Tipografia e layout</h2>
+      <p class="muted">Ajuste os valores do seu CSS e veja o que a WCAG 1.4.12 e as diretrizes COGA recomendam.</p>
+
+      <div class="grid-3">
+        <div>
+          <label for="font">Tamanho base (px)</label>
+          <input type="number" id="font" value="16" min="8" max="48">
+        </div>
+        <div>
+          <label for="leading">Entrelinha (multiplicador)</label>
+          <input type="number" id="leading" value="1.5" min="0.8" max="3" step="0.1">
+        </div>
+        <div>
+          <label for="measure">Medida da coluna (caracteres)</label>
+          <input type="number" id="measure" value="66" min="10" max="160">
+        </div>
+        <div>
+          <label for="spacing">Espaçamento entre letras (em)</label>
+          <input type="number" id="spacing" value="0" min="-0.2" max="0.5" step="0.01">
+        </div>
+        <div>
+          <label for="align">Alinhamento</label>
+          <select id="align">
+            <option value="left" selected>À esquerda</option>
+            <option value="justify">Justificado</option>
+            <option value="center">Centralizado</option>
+          </select>
+        </div>
+        <div>
+          <label for="paragraph">Parágrafo mais longo (caracteres)</label>
+          <input type="number" id="paragraph" value="320" min="0" max="5000">
+        </div>
+      </div>
+
+      <div class="row wrap">
+        <button type="button" id="btn-type" class="primary">Verificar tipografia</button>
+      </div>
+
+      <div id="type-result" hidden>
+        <p class="score-line">Índice de legibilidade tipográfica: <strong id="type-score">–</strong>/100</p>
+        <ul id="type-issues" class="issues"></ul>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="text-title">
+      <h2 id="text-title">3. Linguagem simples</h2>
+      <p class="muted">Cole o texto que vai publicar. A análise é heurística e em português: frases, sílabas, jargão, voz passiva e repetições.</p>
+
+      <label for="text">Texto</label>
+      <textarea id="text" rows="9"></textarea>
+
+      <div class="row wrap">
+        <button type="button" id="btn-text" class="primary">Analisar texto</button>
+        <button type="button" id="btn-sample" class="ghost">Usar exemplo</button>
+        <button type="button" id="btn-copy" class="ghost">Copiar relatório</button>
+      </div>
+
+      <div id="text-result" hidden>
+        <div class="stats">
+          <div class="stat"><span class="value" id="m-words">–</span><span class="label">palavras</span></div>
+          <div class="stat"><span class="value" id="m-sentences">–</span><span class="label">frases</span></div>
+          <div class="stat"><span class="value" id="m-avg">–</span><span class="label">palavras por frase</span></div>
+          <div class="stat"><span class="value" id="m-flesch">–</span><span class="label">Flesch (PT)</span></div>
+          <div class="stat"><span class="value" id="m-score">–</span><span class="label">índice</span></div>
+        </div>
+        <p id="flesch-label" class="muted"></p>
+        <ul id="text-issues" class="issues"></ul>
+      </div>
+
+      <p id="text-status" class="status" role="status" aria-live="polite" data-kind="info"></p>
+    </section>
+
+    <section class="card prose" aria-labelledby="help-title">
+      <h2 id="help-title">Como interpretar</h2>
+      <ul>
+        <li><strong>Razão de contraste:</strong> texto normal exige 4,5:1 (AA) e 7:1 (AAA); texto grande e componentes exigem 3:1.</li>
+        <li><strong>Tipografia:</strong> 16 px de base, entrelinha 1,5, coluna de 45–75 caracteres, sem justificar.</li>
+        <li><strong>Linguagem:</strong> frases de até 20 palavras, voz ativa, sem jargão. O índice Flesch adaptado ao português indica facilidade de leitura.</li>
+        <li><strong>Limite:</strong> verificadores automatizados não substituem teste com pessoas. Use como pré-voo, não como laudo.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Feito para equipes de comunicação, escolas e ONGs que publicam para todo mundo.</p>
+    <p class="muted small">Made by OlacDev · <a href="https://olacdev.com/" rel="noopener">olacdev.com</a></p>
+  </footer>
+</body>
+</html>
