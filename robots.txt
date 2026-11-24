@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://contraste.olacdev.com/sitemap.xml
